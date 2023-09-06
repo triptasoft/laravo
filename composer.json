@@ -1,0 +1,34 @@
+{
+    "name": "triptasoft/laravo",
+    "description": "Laravel Admin & BREAD Generator",
+    "type": "library",
+    "require": {
+        "laravel/framework": "^9.0",
+        "tcg/voyager": "^1.6",
+        "joy/voyager-api": "^1.2",
+        "joy/voyager-api-auth": "^1.2",
+        "laravel/passport": "^11.9",
+        "monstrex/voyager-extension": "^0.95.81",
+        "laravel/socialite": "^5.9"
+    },
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Triptasoft\\Laravo\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "triptasoft",
+            "email": "developer@triptasoft.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Triptasoft\\Laravo\\LaravoServiceProvider"
+            ]
+        }
+    }
+}
