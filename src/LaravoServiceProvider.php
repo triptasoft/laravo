@@ -20,7 +20,7 @@ class LaravoServiceProvider extends ServiceProvider
         include __DIR__.'/routes/web.php';
         $this->commands($this->commands);
         $this->publishes([
-            __DIR__.'/../Views' => base_path('resources/views/vendor/voyager'),
+            __DIR__.'/Views' => base_path('resources/views/vendor/voyager'),
         ], 'laravo');
     }
 

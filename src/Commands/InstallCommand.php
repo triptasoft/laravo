@@ -18,7 +18,8 @@ class InstallCommand extends Command
     {
         Artisan::call('voyager:install --with-dummy');
         Artisan::call('migrate', ['--path' => 'vendor/laravel/passport/database/migrations']);
-        // Artisan::call('passport:install');
+        Artisan::call('passport:install');
+        Artisan::call('vendor:publish', ['--provider' => 'Joy\VoyagerApi\VoyagerApiServiceProvider']);
         Artisan::call('joy-voyager-api:l5-swagger:generate');
         Artisan::call('vendor:publish --tag=laravo');
         Artisan::call('cache:clear');
