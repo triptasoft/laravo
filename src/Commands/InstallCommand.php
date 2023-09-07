@@ -1,5 +1,6 @@
 <?php
 
+namespace Triptasoft\Laravo\Commands;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Artisan;
 
@@ -15,17 +16,15 @@ class InstallCommand extends Command
 
     public function handle()
     {
-        // Artisan::command('laravo:install', function () {
-            Artisan::call('voyager:install --with-dummy');
-            Artisan::call('migrate', ['--path' => 'vendor/laravel/passport/database/migrations']);
-            Artisan::call('passport:install');
-            Artisan::call('joy-voyager-api:l5-swagger:generate');
-            Artisan::call('storage:link');
-            Artisan::call('cache:clear');
-        // })->describe('Installing Laravo');
+        Artisan::call('voyager:install --with-dummy');
+        Artisan::call('migrate', ['--path' => 'vendor/laravel/passport/database/migrations']);
+        // Artisan::call('passport:install');
+        Artisan::call('joy-voyager-api:l5-swagger:generate');
+        Artisan::call('vendor:publish --tag=laravo');
+        Artisan::call('cache:clear');
 
         $output = Artisan::output();
 
-        $this->info('Passport keys have been installed.');
+        $this->info('Laravo has been installed.');
     }
 }
