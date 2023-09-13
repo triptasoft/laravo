@@ -91,7 +91,7 @@
           <h3><i class="voyager-browser"></i> Rest API <small>Access Rest API via dashboard</small></h3>  
             <div class="command_lists">
 
-                @include('voyager::compass.includes.api')
+                @include('laravo::voyager.compass.includes.api')
 
             </div>
           </div>
