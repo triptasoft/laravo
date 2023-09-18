@@ -19,7 +19,7 @@ class InstallCommand extends Command
     public function handle(Filesystem $filesystem)
     {
         $this->info('Migrating database');
-        Artisan::call('voyager:install --with-dummy');
+        // Artisan::call('voyager:install --with-dummy');
         $this->info('Seeding database');
         Artisan::call('migrate', ['--path' => 'vendor/laravel/passport/database/migrations']);
         $this->info('Installing passport');
@@ -78,6 +78,20 @@ class InstallCommand extends Command
         }
 
         $this->info('Guard added successfully!');
+
+        $this->info('Adding swagger to config/l5-swagger.php');
+        $l5FilePath = config_path('l5-swagger.php');
+        $l5Contents = $filesystem->get($l5FilePath);
+
+        if (str_contains($l5Contents, "L5_SWAGGER_BASE_PATH")) {
+            $newConfig = "APP_URL";
+        
+            $l5Contents = str_replace("L5_SWAGGER_BASE_PATH", $newConfig, $l5Contents);
+        
+            $filesystem->put($l5FilePath, $l5Contents);
+        }
+
+        $this->info('Swagger added successfully!');
 
         
 

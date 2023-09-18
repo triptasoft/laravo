@@ -6,6 +6,7 @@ use Illuminate\Foundation\AliasLoader;
 use Illuminate\Support\ServiceProvider;
 use Triptasoft\Laravo\Facades\Laravo as LaravoFacade;
 use TCG\Voyager\Facades\Voyager;
+use Triptasoft\Laravo\Providers\LaravoEventServiceProvider;
 
 class LaravoServiceProvider extends ServiceProvider
 {
@@ -20,6 +21,9 @@ class LaravoServiceProvider extends ServiceProvider
      */
     public function register()
     {
+
+        $this->app->register(LaravoEventServiceProvider::class);
+
         $loader = AliasLoader::getInstance();
         $loader->alias('Laravo', LaravoFacade::class);
         $this->app->singleton('laravo', function () {
