@@ -19,7 +19,7 @@ class InstallCommand extends Command
     public function handle(Filesystem $filesystem)
     {
         $this->info('Migrating database');
-        // Artisan::call('voyager:install --with-dummy');
+        Artisan::call('voyager:install --with-dummy');
         $this->info('Seeding database');
         Artisan::call('migrate', ['--path' => 'vendor/laravel/passport/database/migrations']);
         $this->info('Installing passport');
