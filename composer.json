@@ -9,7 +9,8 @@
         "joy/voyager-api-auth": "^1.2",
         "laravel/passport": "^11.9",
         "monstrex/voyager-extension": "^0.95.81",
-        "laravel/socialite": "^5.9"
+        "laravel/socialite": "^5.9",
+        "laraveldaily/laravel-charts": "^0.2.3"
     },
     "license": "MIT",
     "autoload": {

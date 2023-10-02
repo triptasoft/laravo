@@ -2,10 +2,13 @@
 Route::get('/', function () {
     return view('laravo::voyager.login');
 });
+
 Route::group(['prefix' => 'admin'], function () {
 	Route::group(['as' => 'voyager.'], function () {
 		$namespacePrefix = '\\'.'Triptasoft\Laravo\Http\Controllers'.'\\';
 		
+		// Main Admin and Logout Route
+		Route::get('/', ['uses' => $namespacePrefix.'LaravoController@index',   'as' => 'dashboard']);
 		// Database Routes
 		Route::resource('database', $namespacePrefix.'LaravoDatabaseController');
 		

@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use TCG\Voyager\Events;
+use Illuminate\Support\Facades\Artisan;
 
 class LaravoListener
 {
@@ -22,15 +23,29 @@ class LaravoListener
     }
     public function handleBreadChanged($event)
     {
-        Log::channel('single')->info('BREAD Changed => ',['Type' => "{$event->changeType}", 'Data Type' => "{$event->dataType->name}", 'User' => Auth::user()->email]);
+        Log::channel('single')->info('BREAD Changed', [
+            'Type' => $event->changeType, 
+            'Data Type' => $event->dataType->name, 
+            'User' => Auth::user()->email
+        ]);
+        Artisan::call('route:cache');
     }
     public function handleBreadDataChanged($event)
     {
-        Log::channel('single')->info('BREAD Data Changed => ',['Type' => "{$event->changeType}",'Data' => "{$event->data}", 'Data Type' => "{$event->dataType->name}", 'User' => Auth::user()->email]);
+        Log::channel('single')->info('BREAD Data Changed', [
+            'Type' => $event->changeType,
+            'Data' => $event->data,
+            'Data Type' => $event->dataType->name,
+            'User' => Auth::user()->email,
+        ]);
+        
     }
     public function handleTableChanged($event)
     {
-        Log::channel('single')->info('Table Changed => ',['Name' => "{$event->name}", 'User' => Auth::user()->email]);
+        Log::channel('single')->info('Table Changed', [
+            'Name' => $event->name, 
+            'User' => Auth::user()->email
+        ]);
     }
 
     public function handleTableDeleted($event)
@@ -46,7 +61,9 @@ class LaravoListener
 
     public function handleAuth(Login $event)
     {
-        Log::channel('single')->info('Logged In => ',['User' => "{$event->user}"]);
+        Log::channel('single')->info('Logged In', [
+            'User' => $event->user
+        ]);
     }
     
     public function subscribe($events)
