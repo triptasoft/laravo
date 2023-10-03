@@ -18,8 +18,9 @@ class SocialiteController extends Controller
     public function __construct()
     {
         // Retrieve the Google client secret from the configuration and store it as a property
-        Config::set('services.google.client_id', setting('integration.google_client_id'));
-        Config::set('services.google.client_secret', setting('integration.google_client_secret'));
+        Config::set('services.google.client_id', setting('google_signin.google_client_id'));
+        Config::set('services.google.client_secret', setting('google_signin.google_client_secret'));
+        Config::set('services.google.redirect', setting('google_signin.google_redirect'));
     }
     
     public function redirect(): RedirectResponse
