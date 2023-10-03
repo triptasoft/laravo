@@ -16,7 +16,7 @@ class LaravoSettingsTableSeeder extends Seeder
     public function run()
     {
 
-        $setting = $this->findSetting('google_signin.google_client_id');
+        $setting = $this->findSetting('google-auth.google_client_id');
         if (!$setting->exists) {
             $setting->fill([
                 'display_name' => 'Google Client ID',
@@ -24,11 +24,11 @@ class LaravoSettingsTableSeeder extends Seeder
                 'details'      => '',
                 'type'         => 'text',
                 'order'        => 7,
-                'group'        => 'Google Sign In',
+                'group'        => 'Google Auth',
             ])->save();
         }
 
-        $setting = $this->findSetting('google_signin.google_client_secret');
+        $setting = $this->findSetting('google-auth.google_client_secret');
         if (!$setting->exists) {
             $setting->fill([
                 'display_name' => 'Google Client Secret',
@@ -36,11 +36,11 @@ class LaravoSettingsTableSeeder extends Seeder
                 'details'      => '',
                 'type'         => 'text',
                 'order'        => 8,
-                'group'        => 'Google Sign In',
+                'group'        => 'Google Auth',
             ])->save();
         }
         
-        $setting = $this->findSetting('google_signin.google_redirect');
+        $setting = $this->findSetting('google-auth.google_redirect');
         if (!$setting->exists) {
             $setting->fill([
                 'display_name' => 'Google Redirect URI',
@@ -48,7 +48,7 @@ class LaravoSettingsTableSeeder extends Seeder
                 'details'      => '',
                 'type'         => 'text',
                 'order'        => 9,
-                'group'        => 'Google Sign In',
+                'group'        => 'Google Auth',
             ])->save();
         }
     }
