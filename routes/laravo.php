@@ -25,5 +25,6 @@ Route::group(['as' => 'laravo.'], function () {
 	Route::middleware('guest')->group(function () {
 		Route::get('auth/google/redirect', [Triptasoft\Laravo\Http\Controllers\Auth\SocialiteController::class, 'redirect'])->name('google.redirect');
 		Route::get('auth/google/callback', [Triptasoft\Laravo\Http\Controllers\Auth\SocialiteController::class, 'callback'])->name('google.callback');
+		// Route::match(['get', 'post'], 'auth/google/callback', [Triptasoft\Laravo\Http\Controllers\Auth\SocialiteController::class, 'callback'])->name('google.callback');
 	});
 });

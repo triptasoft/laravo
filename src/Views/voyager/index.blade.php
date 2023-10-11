@@ -1,45 +1,70 @@
 @extends('voyager::master')
 
 @section('content')
-    <div class="page-content">
+    <div class="page-content" style="background-color:#e6e6e6;border-radius: 15px;margin:10px;">
         @include('voyager::alerts')
-        @include('voyager::dimmers')
+        <!-- @include('voyager::dimmers') -->
 
         <div class="container">
             <div class="row">
 
+                <h3 class="col-md-12" style="margin-top:0px;margin-bottom:10px;">Dashboard</h3>
+
                 <div class="col-md-4">
-                  <div class="card">
-                      <!-- <div class="card-header">Dashboard</div> -->
-                      <div class="card-body">
-                          <h1>{{ $chart1->options['chart_title'] }}</h1>
-                          <!-- <div style="height:450px"> -->
-                          {!! $chart1->renderHtml() !!}
-                      </div>
+                  <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Chat with AI" id="txtSearch"/>
+                    <div class="input-group-btn">
+                      <button style="margin-top:0px !important;" class="btn btn-primary" type="submit">
+                        <span class="glyphicon glyphicon-send"></span>
+                      </button>
+                    </div>
                   </div>
                 </div>
 
-                <div class="col-md-4">
-                  <div class="card">
-                      <!-- <div class="card-header">Dashboard</div> -->
-                      <div class="card-body">
-                          <h1>{{ $chart2->options['chart_title'] }}</h1>
-                          <!-- <div style="height:100%"> -->
-                          {!! $chart2->renderHtml() !!}
-                      </div>
+                <div class="col-md-8">
+                  <div class="input-group">
+                  <div class="input-group-btn">
+                      <button style="margin-top:0px !important;" class="btn btn-primary" type="submit">
+                        <span class="glyphicon glyphicon-equalizer"></span> 
+                      </button>
+                    </div>
+                    <input type="text" class="form-control" placeholder="AI Answer" id="txtSearch"/>
                   </div>
+                </div>
+            
+                <div class="col-md-3" style="margin-top:10px;margin-bottom:0px;">
+                    <div class="panel panel-default" style="background: linear-gradient(45deg, #00ccff, #66e0ff);color:white;box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); border-radius: 10px;">
+                        <!-- <div class="panel-heading">Dashboard</div> -->
+                        <div class="panel-body">
+                            <div class="text-center">
+                                <!-- Your content here -->
+                                <h1 style="font-weight:bold">0</h1>
+                                <h4 style="font-weight:bold">User</h4>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
-                <div class="col-md-4">
-                  <div class="card">
-                      <!-- <div class="card-header">Dashboard</div> -->
-                      <div class="card-body">
-                          <h1>{{ $chart3->options['chart_title'] }}</h1>
-                          <!-- <div style="height:100%"> -->
-                          {!! $chart3->renderHtml() !!}
-                      </div>
-                  </div>
+                <div class="col-md-3" style="margin-top:10px;margin-bottom:0px;">
+                    
                 </div>
+
+            </div>
+            
+            <div class="row">
+
+                @foreach($charts as $chart)
+                <div class="col-md-{{ $chart->options['size'] }}">
+                    <div class="panel panel-default" style="box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); border-radius: 10px;">
+                        <!-- <div class="panel-heading">Dashboard</div> -->
+                        <div class="panel-body">
+                            <h4>{{ $chart->options['chart_title'] }}</h4>
+                            <!-- <div style="height:450px"> -->
+                            {!! $chart->renderHtml() !!}
+                        </div>
+                    </div>
+                </div>
+                @endforeach
 
             </div>
         </div>
@@ -121,12 +146,10 @@
 
 @section('javascript')
 
-    {!! $chart1->renderChartJsLibrary() !!}
-    {!! $chart1->renderJs() !!}
-    {!! $chart2->renderChartJsLibrary() !!}
-    {!! $chart2->renderJs() !!}
-    {!! $chart3->renderChartJsLibrary() !!}
-    {!! $chart3->renderJs() !!}
+    @foreach($charts as $chart)
+        {!! $chart->renderChartJsLibrary() !!}
+        {!! $chart->renderJs() !!}
+    @endforeach
 
     @if(isset($google_analytics_client_id) && !empty($google_analytics_client_id))
         <script>

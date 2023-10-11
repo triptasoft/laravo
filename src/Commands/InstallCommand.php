@@ -5,6 +5,7 @@ namespace Triptasoft\Laravo\Commands;
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Facades\Artisan;
+use TCG\Voyager\Models\Permission;
 
 class InstallCommand extends Command
 {
@@ -18,20 +19,29 @@ class InstallCommand extends Command
 
     public function handle(Filesystem $filesystem)
     {
-        $this->info('Migrating database');
+        $this->info('Migrating & Seeding database');
         Artisan::call('voyager:install --with-dummy');
-        $this->info('Seeding database');
         Artisan::call('migrate', ['--path' => 'vendor/laravel/passport/database/migrations']);
+        Artisan::call('migrate', ['--path' => 'vendor/triptasoft/laravo/database/migrations']);
+
         $this->info('Installing passport');
         Artisan::call('passport:install');
+
         $this->info('Publishing assets');
-        Artisan::call('vendor:publish', ['--provider' => 'Joy\VoyagerApi\VoyagerApiServiceProvider']);
+        Artisan::call('vendor:publish', ['--provider' => 'Joy\VoyagerApi\VoyagerApiServiceProvider', '--force' => true]);
         Artisan::call('vendor:publish', ['--provider' => 'MonstreX\VoyagerExtension\VoyagerExtensionServiceProvider', '--tag' => 'config']);
-        Artisan::call('optimize');
-        Artisan::call('joy-voyager-api:l5-swagger:generate');
-        Artisan::call('vendor:publish --tag=laravo');
+        Artisan::call('vendor:publish --tag=laravo --force');
         Artisan::call('db:seed', ['--class' => 'LaravoSettingsTableSeeder']);
+        Artisan::call('db:seed', ['--class' => 'ChartsTableSeeder']);
+        Artisan::call('db:seed', ['--class' => 'LaravoDataTypesTableSeeder']);
+        Artisan::call('db:seed', ['--class' => 'LaravoDataRowsTableSeeder']);
+        Artisan::call('db:seed', ['--class' => 'LaravoMenuItemsTableSeeder']);
+        Permission::generateFor('charts');
+
+        Artisan::call('route:cache');
         Artisan::call('cache:clear');
+
+        Artisan::call('joy-voyager-api:l5-swagger:generate');
 
         $output = Artisan::output();
 
@@ -92,6 +102,26 @@ class InstallCommand extends Command
         }
 
         $this->info('Swagger added successfully!');
+
+        $this->info('Adding fillable to Models/User.php');
+        $userFilePath = app_path('Models/User.php'); // Adjust the path to your User model
+        $userContents = $filesystem->get($userFilePath);
+
+        if (str_contains($userContents, "'provider_id',")) {
+            // 'provider_id' is already in the fillable array; no need to add it.
+            // You can add an else block here if you want to add it if it's not present.
+        } else {
+            // Add 'provider_id' to the $fillable array
+            $userContents = str_replace(
+                "'password',",
+                "'password',\n        'provider_id',", // Add 'provider_id' after 'password'
+                $userContents
+            );
+        
+            $filesystem->put($userFilePath, $userContents);
+        }
+
+        $this->info('Fillable added successfully!');
 
         
 

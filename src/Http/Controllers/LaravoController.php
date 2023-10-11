@@ -7,37 +7,30 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 use TCG\Voyager\Facades\Voyager;
 use LaravelDaily\LaravelCharts\Classes\LaravelChart;
+use Triptasoft\Laravo\Models\Chart;
 
 class LaravoController extends \TCG\Voyager\Http\Controllers\Controller
 {
-    public function index(Request $request){
-        $chart_options = [
-          'chart_title' => 'Users',
-          'report_type' => 'group_by_string',
-          'model' => 'TCG\Voyager\Models\User',
-          'group_by_field' => 'name',
-          'chart_type' => 'pie',
-        ];
-        $chart_options2 = [
-          'chart_title' => 'Posts',
-          'report_type' => 'group_by_date',
-          'model' => 'TCG\Voyager\Models\Post',
-          'group_by_period' => 'day',
-          'group_by_field' => 'created_at',
-          'chart_type' => 'bar',
-        ];
-        $chart_options3 = [
-            'chart_title' => 'Page',
-            'report_type' => 'group_by_string',
-            'model' => 'TCG\Voyager\Models\Page',
-            'group_by_field' => 'status',
-            'chart_type' => 'pie',
-          ];
-        $chart1 = new LaravelChart($chart_options);
-        $chart2 = new LaravelChart($chart_options2);
-        $chart3 = new LaravelChart($chart_options3);
-        
-        return view('voyager::index', compact('chart1','chart2','chart3'));
+    public function index(Request $request) {
+        $chartData = Chart::orderBy('order', 'asc')->get();
+        $charts = [];
+        foreach($chartData as $chart){
+            $charts[] = $this->createChart([
+                'chart_title' => $chart->title,
+                'chart_type' => $chart->type,
+                'report_type' => $chart->report_type,
+                'model' => $chart->model,
+                'group_by_field' => $chart->field,
+                'relationship_name' => $chart->relation_name,
+                'size' => $chart->size,
+            ]);
+        };
+    
+        return view('voyager::index')->with('charts', $charts);
+    }
+
+    private function createChart($chartOptions) {
+        return new LaravelChart($chartOptions);
     }
 
     public function assets(Request $request)

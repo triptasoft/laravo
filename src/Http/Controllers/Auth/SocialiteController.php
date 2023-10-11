@@ -28,17 +28,30 @@ class SocialiteController extends Controller
         return Socialite::driver('google')->redirect();
     }
 
-    public function callback()
+    public function callback(Request $request)
     {
-        $google = Socialite::driver('google')->user();
+        if ($request->isMethod('get')) {
+            $google = Socialite::driver('google')->user();
+        } elseif ($request->isMethod('post')) {
+            $google = Socialite::driver('google')->userFromToken($request->access_token);
+        }
         $role   = Role::where('name', '=', config('voyager.user.default_role'))->first();
+
+        $request->merge([
+            'email' => $google->getEmail(),
+            'password' => $google->getId(),
+        ]);
 
         $user = User::query()
             ->where('provider_id', $google->getId())
             ->first();
 
         if ($user !== null) {
-            return $this->login($user, 'Successfully logged in.');
+            if ($request->isMethod('get')) {
+                return $this->login($user, 'Successfully logged in.');
+            } elseif ($request->isMethod('post')) {
+                return $this->token($request);
+            }
         }
 
         $user = User::query()
@@ -49,8 +62,11 @@ class SocialiteController extends Controller
             $user->update([
                 'provider_id' => $google->getId(),
             ]);
-
-            return $this->login($user, 'Successfully logged in.');
+            if ($request->isMethod('get')) {
+                return $this->login($user, 'Successfully logged in.');
+            } elseif ($request->isMethod('post')) {
+                return $this->token($request);
+            }
         }
 
         $user = User::query()->create([
@@ -64,12 +80,21 @@ class SocialiteController extends Controller
 
         event(new Registered($user));
 
-        return $this->login($user, 'Thanks for signing up!');
+        if ($request->isMethod('get')) {
+            return $this->login($user, 'Thanks for signing up!');
+        } elseif ($request->isMethod('post')) {
+            return $this->token($request);
+        }
     }
 
     private function login($user, $message) {
         auth()->guard()->login($user, false);
 
         return redirect()->route('voyager.dashboard');
+    }
+
+    private function token($request) {
+        $api = new \Joy\VoyagerApiAuth\Http\Controllers\VoyagerAuthController();
+        return $api->login($request);
     }
 }
