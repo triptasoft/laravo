@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('charts', function (Blueprint $table) {
             $table->increments('id');
             $table->string('title')->nullable();
+            $table->string('chart_type')->nullable();
             $table->string('type')->nullable();
             $table->string('report_type')->nullable();
             $table->string('model')->nullable();
