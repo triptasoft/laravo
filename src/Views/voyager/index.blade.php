@@ -1,14 +1,14 @@
 @extends('voyager::master')
 
 @section('content')
-    <div class="page-content" style="background-color:#e6e6e6;border-radius: 15px;margin:10px;">
+    <div class="page-content" style="background-color:#f2f2f2;border-radius: 15px;margin:10px;">
         @include('voyager::alerts')
         <!-- @include('voyager::dimmers') -->
 
         <div class="container">
             <div class="row">
 
-                <h3 class="col-md-12" style="margin-top:0px;margin-bottom:10px;">Dashboard</h3>
+                <h3 class="col-md-12" style="margin-top:0px;margin-bottom:25px;">Dashboard</h3>
 
                 <div class="col-md-4">
                   <div class="input-group">
@@ -31,39 +31,41 @@
                     <input type="text" class="form-control" placeholder="AI Answer" id="txtSearch"/>
                   </div>
                 </div>
-            
-                <div class="col-md-3" style="margin-top:10px;margin-bottom:0px;">
-                    <div class="panel panel-default" style="background: linear-gradient(45deg, #00ccff, #66e0ff);color:white;box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); border-radius: 10px;">
-                        <!-- <div class="panel-heading">Dashboard</div> -->
-                        <div class="panel-body">
-                            <div class="text-center">
-                                <!-- Your content here -->
-                                <h1 style="font-weight:bold">0</h1>
-                                <h4 style="font-weight:bold">User</h4>
+
+                @foreach($charts as $chart)
+                    @if($chart->options['type'] === 'counter')
+                        <div class="col-md-3" style="margin-bottom:0px;">
+                            <div class="panel panel-default" style="background: linear-gradient(45deg, #00ccff, #66e0ff);color:white;box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); border-radius: 10px;">
+                                <!-- <div class="panel-heading">Dashboard</div> -->
+                                <div class="panel-body">
+                                    <div class="text-center">
+                                        <!-- Your content here -->
+                                        <h1 style="font-weight:bold">{{ $chart->options['count'] }}</h1>
+                                        <h4 style="font-weight:bold">{{ $chart->options['chart_title'] }}</h4>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-
-                <div class="col-md-3" style="margin-top:10px;margin-bottom:0px;">
-                    
-                </div>
+                    @endif
+                @endforeach
 
             </div>
             
             <div class="row">
 
                 @foreach($charts as $chart)
-                <div class="col-md-{{ $chart->options['size'] }}">
-                    <div class="panel panel-default" style="box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); border-radius: 10px;">
-                        <!-- <div class="panel-heading">Dashboard</div> -->
-                        <div class="panel-body">
-                            <h4>{{ $chart->options['chart_title'] }}</h4>
-                            <!-- <div style="height:450px"> -->
-                            {!! $chart->renderHtml() !!}
+                    @if($chart->options['type'] === 'chart')
+                        <div class="col-md-{{ $chart->options['size'] }}">
+                            <div class="panel panel-default" style="box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); border-radius: 10px;">
+                                <!-- <div class="panel-heading">Dashboard</div> -->
+                                <div class="panel-body">
+                                    <h4>{{ $chart->options['chart_title'] }}</h4>
+                                    <!-- <div style="height:450px"> -->
+                                    {!! $chart->renderHtml() !!}
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
+                    @endif
                 @endforeach
 
             </div>

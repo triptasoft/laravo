@@ -17,16 +17,20 @@ class LaravoController extends \TCG\Voyager\Http\Controllers\Controller
         foreach($chartData as $chart){
             $charts[] = $this->createChart([
                 'chart_title' => $chart->title,
-                'chart_type' => $chart->type,
+                'chart_type' => $chart->chart_type,
                 'report_type' => $chart->report_type,
                 'model' => $chart->model,
                 'group_by_field' => $chart->field,
                 'relationship_name' => $chart->relation_name,
                 'size' => $chart->size,
+                'type' => $chart->type,
+                'count' => $chart->model::count(),
             ]);
         };
     
-        return view('voyager::index')->with('charts', $charts);
+        return view('voyager::index')->with([
+            'charts' => $charts,
+        ]);
     }
 
     private function createChart($chartOptions) {

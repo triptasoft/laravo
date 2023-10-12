@@ -59,6 +59,28 @@ class LaravoDataRowsTableSeeder extends Seeder
                 'delete'       => 1,
                 'order'        => 3,
                 'details'      => [
+                    'default' => 'chart',
+                    'options' => [
+                        'chart'     => 'Chart',
+                        'counter'      => 'Counter',
+                    ],
+                ],
+            ])->save();
+        }
+
+        $dataRow = $this->dataRow($chartDataType, 'chart_type');
+        if (!$dataRow->exists) {
+            $dataRow->fill([
+                'type'         => 'radio_btn',
+                'display_name' => 'Chart Type',
+                'required'     => 1,
+                'browse'       => 1,
+                'read'         => 1,
+                'edit'         => 1,
+                'add'          => 1,
+                'delete'       => 1,
+                'order'        => 3,
+                'details'      => [
                     'default' => 'pie',
                     'options' => [
                         'line'     => 'Line',
