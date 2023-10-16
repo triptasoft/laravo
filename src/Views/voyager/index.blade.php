@@ -149,8 +149,10 @@
 @section('javascript')
 
     @foreach($charts as $chart)
-        {!! $chart->renderChartJsLibrary() !!}
-        {!! $chart->renderJs() !!}
+        @if($chart->options['type'] === 'chart')
+            {!! $chart->renderChartJsLibrary() !!}
+            {!! $chart->renderJs() !!}
+        @endif
     @endforeach
 
     @if(isset($google_analytics_client_id) && !empty($google_analytics_client_id))
