@@ -9,7 +9,7 @@
             @if (method_exists($action, 'view'))
                 @include($action->view(), ['action' => $action, 'data' => $data, 'dataType' => $dataType])
             @else
-                <a href="{{ $action->getRoute($dataType->name) }}" title="{{ $action->getTitle() }}" {!! $action->convertAttributesToHtml() !!}>
+                <a href="{{ $action->getRoute($dataType->name) }}" data-toggle="tooltip" title="{{ $action->getTitle() }}" {!! $action->convertAttributesToHtml() !!}>
                     <button class=""><i class="{{ $action->getIcon() }}"></i> <span class="hidden-xs hidden-sm">{{ $action->getTitle() }}</span></button>
                 </a>
             @endif

@@ -20,7 +20,7 @@
 <div class="page-content container-fluid vext-browse">
     <div class="row">
 
-        @include('vendor.laravo.tree.parent')
+        @include('vendor.laravo.diagram.parent')
 
         <div class="col-md-12">
             <div class="panel panel-bordered">
@@ -42,75 +42,106 @@
 @section('css')
 <link rel="stylesheet" href="{{ voyager_extension_asset('js/tinytoggle/css/tinytoggle.min.css') }}">
 <style>
-    .tree, .tree ul {
-        margin:0;
-        padding:0;
-        list-style:none
-    }
+    /*Now the CSS Created by R.S*/
     .tree ul {
-        margin-left:1em;
-        position:relative
+        padding-top: 20px; position: relative;
+    
+    	transition: all 0.5s;
+    	-webkit-transition: all 0.5s;
+    	-moz-transition: all 0.5s;
     }
-    .tree ul ul {
-        margin-left:.5em
-    }
-    .tree ul:before {
-        content:"";
-        display:block;
-        width:0;
-        position:absolute;
-        top:0;
-        bottom:0;
-        left:0;
-        border-left:2px solid
-    }
+
     .tree li {
-        margin:0;
-        padding:0 1em;
-        line-height:2em;
-        color:#369;
-        font-weight:700;
-        position:relative
+    	float: left; text-align: center;
+    	list-style-type: none;
+    	position: relative;
+    	padding: 20px 5px 0 5px;
+    
+    	transition: all 0.5s;
+    	-webkit-transition: all 0.5s;
+    	-moz-transition: all 0.5s;
     }
-    .tree ul li:before {
-        content:"";
-        display:block;
-        width:10px;
-        height:0;
-        border-top:2px solid;
-        margin-top:-1px;
-        position:absolute;
-        top:1em;
-        left:0
+
+    /*We will use ::before and ::after to draw the connectors*/
+
+    .tree li::before, .tree li::after{
+    	content: '';
+    	position: absolute; top: 0; right: 50%;
+    	border-top: 1px solid #ccc;
+    	width: 50%; height: 20px;
     }
-    .tree ul li:last-child:before {
-        background:#fff;
-        height:auto;
-        top:1em;
-        bottom:0
+    .tree li::after{
+    	right: auto; left: 50%;
+    	border-left: 1px solid #ccc;
     }
-    .indicator {
-        margin-right:5px;
+
+    /*We need to remove left-right connectors from elements without 
+    any siblings*/
+    .tree li:only-child::after, .tree li:only-child::before {
+    	display: none;
     }
-    .tree li a {
-        text-decoration: none;
-        color:#369;
-        background-color:#cce6ff;
-        margin:5px;
-        border-radius:5px;
-        padding:2px 5px 3px 5px;
+
+    /*Remove space from the top of single children*/
+    .tree li:only-child{ padding-top: 0;}
+
+    /*Remove left connector from first child and 
+    right connector from last child*/
+    .tree li:first-child::before, .tree li:last-child::after{
+    	border: 0 none;
     }
-    .tree li button, .tree li button:active, .tree li button:focus {
-        text-decoration: none;
-        color:#369;
-        border:none;
-        background:transparent;
-        margin:0px 0px 0px 0px;
-        padding:0px 0px 0px 0px;
-        outline: 0;
+    /*Adding back the vertical connector to the last nodes*/
+    .tree li:last-child::before{
+    	border-right: 1px solid #ccc;
+    	border-radius: 0 5px 0 0;
+    	-webkit-border-radius: 0 5px 0 0;
+    	-moz-border-radius: 0 5px 0 0;
     }
-    .selected{
-        background-color:#00cc00 !important;
+    .tree li:first-child::after{
+    	border-radius: 5px 0 0 0;
+    	-webkit-border-radius: 5px 0 0 0;
+    	-moz-border-radius: 5px 0 0 0;
+    }
+
+    /*Time to add downward connectors from parents*/
+    .tree ul ul::before{
+    	content: '';
+    	position: absolute; top: 0; left: 50%;
+    	border-left: 1px solid #ccc;
+    	width: 0; height: 20px;
+    }
+
+    .tree li a{
+    	border: 1px solid #ccc;
+    	padding: 5px 10px;
+    	text-decoration: none;
+    	color: #666;
+    	font-family: arial, verdana, tahoma;
+    	font-size: 11px;
+    	display: inline-block;
+    
+    	border-radius: 5px;
+    	-webkit-border-radius: 5px;
+    	-moz-border-radius: 5px;
+    
+    	transition: all 0.5s;
+    	-webkit-transition: all 0.5s;
+    	-moz-transition: all 0.5s;
+    }
+
+    /*Time for some hover effects*/
+    /*We will apply the hover effect the the lineage of the element also*/
+    .tree li a:hover, .tree li a:hover+ul li a {
+    	background: #c8e4f8; color: #000; border: 1px solid #94a0b4;
+    }
+    /*Connector styles on hover*/
+    .tree li a:hover+ul li::after, 
+    .tree li a:hover+ul li::before, 
+    .tree li a:hover+ul::before, 
+    .tree li a:hover+ul ul::before{
+    	border-color:  #94a0b4;
+    }
+    .tree li:has(ul):not(:has(li)) ul{
+        display:none;
     }
 </style>
 @stop
@@ -243,97 +274,5 @@ $(document).ready(function () {
     });
 
 });
-</script>
-<script>
-$.fn.extend({
-    treed: function (o) {
-        var openedClass = 'glyphicon-minus-sign';
-        var closedClass = 'glyphicon-plus-sign';
-
-        if (typeof o != 'undefined'){
-            if (typeof o.openedClass != 'undefined'){
-                openedClass = o.openedClass;
-            }
-            if (typeof o.closedClass != 'undefined'){
-                closedClass = o.closedClass;
-            }
-        }
-
-        // Initialize each of the top levels
-        var tree = $(this);
-        tree.addClass("tree");
-        tree.find('li:has(ul):not(:has(li))').each(function () {
-            var branch = $(this); // li without children ul
-            branch.prepend("<i class='indicator glyphicon glyphicon-record'></i>");
-            branch.addClass('branch');
-            branch.on('click', function (e) {
-                // $('.tree .branch').not(this).children('span').removeClass('selected');
-
-                if (this == e.target) {
-                    var span = $(this).children('span:first');
-
-                    span.toggleClass('selected');
-
-                    // Toggle the children
-                    $(this).children().children().toggle();
-                }
-            });
-            branch.children().children().toggle();
-        });
-        tree.find('li').has("ul").has('li').each(function () {
-            var branch = $(this); // li with children ul
-            branch.prepend("<i class='indicator glyphicon " + closedClass + "'></i>");
-            branch.addClass('branch');
-            branch.on('click', function (e) {
-                // $('.tree .branch').not(this).children('span').removeClass('selected');
-                if (this == e.target) {
-                    var icon = $(this).children('i:first');
-                    var span = $(this).children('span:first');
-
-                    icon.toggleClass(openedClass + " " + closedClass);
-                    span.toggleClass('selected');
-
-                    // Toggle the children
-                    $(this).children().children().toggle();
-                }
-            });
-            branch.children().children().toggle();
-        });
-
-        // Fire event from the dynamically added icon
-        tree.find('.branch .indicator').each(function () {
-            $(this).on('click', function () {
-                $(this).closest('li').click();
-            });
-        });
-
-        // Fire event to open branch if the li contains an anchor instead of text
-        tree.find('.branch>a').each(function () {
-            $(this).on('click', function (e) {
-                $(this).closest('li').click();
-                e.preventDefault();
-            });
-        });
-
-        // Fire event to open branch if the li contains a button instead of text
-        tree.find('.branch>button').each(function () {
-            $(this).on('click', function (e) {
-                $(this).closest('li').click();
-                e.preventDefault();
-            });
-        });
-
-        // Fire event to open branch if the li contains a span instead of text
-        tree.find('.branch>span').each(function () {
-            $(this).on('click', function (e) {
-                $(this).closest('li').click();
-                e.preventDefault();
-            });
-        });
-    }
-});
-
-// Initialization of treeviews
-$('#tree').treed();
 </script>
 @stop

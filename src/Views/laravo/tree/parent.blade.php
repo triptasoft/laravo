@@ -14,7 +14,7 @@
                         <li>
                         <span class="badge">{{ $item->order }}</span>
                         <a href="#">@foreach($dataType->browseRows as $row) {{ $data->{$row->field} }} @endforeach</a>    
-                            @include('vendor.laravo.tree.children', ['items' => $dataTypeContent, 'parentId' => $item->id])
+                            @include('.vendor.laravo.tree.children', ['items' => $dataTypeContent, 'parentId' => $item->id])
                         </li>
                     @endif
                 @endforeach
