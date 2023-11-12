@@ -123,7 +123,7 @@ class InstallCommand extends Command
 
         $this->info('Fillable added successfully!');
 
-        
+        Artisan::call('route:cache');
 
         $this->info('Laravo has been installed.');
     }
