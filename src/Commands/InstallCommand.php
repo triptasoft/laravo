@@ -22,7 +22,6 @@ class InstallCommand extends Command
         $this->info('Migrating & Seeding database');
         Artisan::call('voyager:install --with-dummy');
         Artisan::call('migrate', ['--path' => 'vendor/laravel/passport/database/migrations']);
-        Artisan::call('migrate', ['--path' => 'vendor/triptasoft/laravo/database/migrations']);
 
         $this->info('Installing passport');
         Artisan::call('passport:install');
@@ -31,17 +30,13 @@ class InstallCommand extends Command
         Artisan::call('vendor:publish', ['--provider' => 'Joy\VoyagerApi\VoyagerApiServiceProvider', '--force' => true]);
         Artisan::call('vendor:publish', ['--provider' => 'MonstreX\VoyagerExtension\VoyagerExtensionServiceProvider', '--tag' => 'config']);
         Artisan::call('vendor:publish --tag=laravo --force');
+        Artisan::call('migrate', ['--path' => 'vendor/triptasoft/laravo/database/migrations']);
         Artisan::call('db:seed', ['--class' => 'LaravoSettingsTableSeeder']);
         Artisan::call('db:seed', ['--class' => 'ChartsTableSeeder']);
         Artisan::call('db:seed', ['--class' => 'LaravoDataTypesTableSeeder']);
         Artisan::call('db:seed', ['--class' => 'LaravoDataRowsTableSeeder']);
         Artisan::call('db:seed', ['--class' => 'LaravoMenuItemsTableSeeder']);
         Permission::generateFor('charts');
-
-        Artisan::call('route:cache');
-        Artisan::call('cache:clear');
-
-        Artisan::call('joy-voyager-api:l5-swagger:generate');
 
         $output = Artisan::output();
 
@@ -123,7 +118,9 @@ class InstallCommand extends Command
 
         $this->info('Fillable added successfully!');
 
+        Artisan::call('cache:clear');
         Artisan::call('route:cache');
+        Artisan::call('joy-voyager-api:l5-swagger:generate');
 
         $this->info('Laravo has been installed.');
     }
