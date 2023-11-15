@@ -139,11 +139,11 @@ if (\Illuminate\Support\Str::startsWith(Auth::user()->avatar, 'http://') || \Ill
     }
     @endif
 </script>
-<script>
+<!-- <script>
     $(document).ready(function(){
       $('[data-toggle="tooltip"]').tooltip();
     });
-</script>
+</script> -->
 @include('voyager::media.manager')
 @yield('javascript')
 @stack('javascript')
