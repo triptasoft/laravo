@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 use TCG\Voyager\Facades\Voyager;
-use LaravelDaily\LaravelCharts\Classes\LaravelChart;
+use Triptasoft\Laravo\Charts\LaravoChart;
 use Triptasoft\Laravo\Models\Chart;
 
 class LaravoController extends \TCG\Voyager\Http\Controllers\Controller
@@ -16,12 +16,13 @@ class LaravoController extends \TCG\Voyager\Http\Controllers\Controller
         $charts = [];
         foreach($chartData as $chart){
             $charts[] = $this->createChart([
-                'chart_title' => $chart->title,
-                'chart_type' => $chart->chart_type,
+                'chart_title' => $chart->chart_title,
                 'report_type' => $chart->report_type,
+                'chart_type' => $chart->chart_type,
                 'model' => $chart->model,
-                'group_by_field' => $chart->field,
-                'relationship_name' => $chart->relation_name,
+                'group_by_field' => $chart->group_by_field,
+                'relationship_name' => $chart->relationship_name,
+
                 'size' => $chart->size,
                 'type' => $chart->type,
                 'count' => $chart->model::count(),
@@ -34,7 +35,15 @@ class LaravoController extends \TCG\Voyager\Http\Controllers\Controller
     }
 
     private function createChart($chartOptions) {
-        return new LaravelChart($chartOptions);
+        return new LaravoChart($chartOptions);
+    }
+
+    public function count($any)
+    {
+        $count = $any::count();
+        return response()->json([
+            'data' => $count,
+        ]);
     }
 
     public function assets(Request $request)

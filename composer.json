@@ -10,7 +10,6 @@
         "laravel/passport": "^11.9",
         "monstrex/voyager-extension": "^0.95.81",
         "laravel/socialite": "^5.9",
-        "laraveldaily/laravel-charts": "^0.2.3",
         "beyondcode/laravel-ask-database": "^1.0"
     },
     "license": "MIT",

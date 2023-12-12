@@ -59,6 +59,7 @@ class LaravoServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->loadViewsFrom(__DIR__.'/Views', 'laravo');
+        $this->loadViewsFrom(__DIR__.'/Charts/views', 'laravo');
         // Voyager::useModel('User', \App\User::class);
 
         $this->mapApiRoutes();

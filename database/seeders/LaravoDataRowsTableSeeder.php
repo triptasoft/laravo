@@ -31,11 +31,11 @@ class LaravoDataRowsTableSeeder extends Seeder
             ])->save();
         }
 
-        $dataRow = $this->dataRow($chartDataType, 'title');
+        $dataRow = $this->dataRow($chartDataType, 'chart_title');
         if (!$dataRow->exists) {
             $dataRow->fill([
                 'type'         => 'text',
-                'display_name' => 'Title',
+                'display_name' => 'Chart Title',
                 'required'     => 1,
                 'browse'       => 1,
                 'read'         => 1,
@@ -130,11 +130,11 @@ class LaravoDataRowsTableSeeder extends Seeder
             ])->save();
         }
 
-        $dataRow = $this->dataRow($chartDataType, 'field');
+        $dataRow = $this->dataRow($chartDataType, 'group_by_field');
         if (!$dataRow->exists) {
             $dataRow->fill([
                 'type'         => 'text',
-                'display_name' => 'Field',
+                'display_name' => 'Group by Field',
                 'required'     => 0,
                 'browse'       => 0,
                 'read'         => 1,
@@ -160,11 +160,11 @@ class LaravoDataRowsTableSeeder extends Seeder
             ])->save();
         }
 
-        $dataRow = $this->dataRow($chartDataType, 'relation_name');
+        $dataRow = $this->dataRow($chartDataType, 'relationship_name');
         if (!$dataRow->exists) {
             $dataRow->fill([
                 'type'         => 'text',
-                'display_name' => 'Relation Name',
+                'display_name' => 'Relationship Name',
                 'required'     => 0,
                 'browse'       => 0,
                 'read'         => 1,

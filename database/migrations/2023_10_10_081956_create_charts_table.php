@@ -15,16 +15,17 @@ return new class extends Migration
     {
         Schema::create('charts', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('title')->nullable();
+            $table->string('chart_title')->nullable();
             $table->string('chart_type')->nullable();
-            $table->string('type')->nullable();
             $table->string('report_type')->nullable();
             $table->string('model')->nullable();
-            $table->string('field')->nullable();
-            $table->string('size')->nullable();
-            $table->string('relation_name')->nullable();
+            $table->string('group_by_field')->nullable();
+            $table->string('relationship_name')->nullable();
+            
             $table->integer('parent_id')->nullable();
             $table->integer('order')->nullable();
+            $table->string('size')->nullable();
+            $table->string('type')->nullable();
             $table->timestamps();
         });
     }
