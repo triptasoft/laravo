@@ -314,7 +314,7 @@ class LaravoChart
      */
     public function renderChartJsLibrary()
     {
-        return '<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script><script src="https://cdn.jsdelivr.net/gh/emn178/chartjs-plugin-labels/src/chartjs-plugin-labels.js"></script>';
+        return '<script src="https://cdn.jsdelivr.net/npm/chart.js"></script><script src="https://unpkg.com/chart.js-plugin-labels-dv/dist/chartjs-plugin-labels.min.js"></script>';
     }
     
     /**

@@ -55,17 +55,27 @@
         ]
     },
     options: {
+        @if ($options['chart_type'] == 'pie' || $options['chart_type'] == 'doughnut')
+            responsive: true,
+                maintainAspectRatio: true,
+                    aspectRatio: 2,
+                        @endif
         plugins: {
             @if ($options['chart_type'] == 'pie' || $options['chart_type'] == 'doughnut')
-            labels: [
-                {
-                  render: 'percentage'
-                }
-            ]
+                labels: [
+                    {
+                        render: 'percentage',
+                        position: 'border',
+                        overlap: false,
+                        outsidePadding: 2,
+                        textMargin: 2,
+                        arc: false,
+                    }
+                ]
             @elseif ($options['chart_type'] == 'bar')
             labels: [
                 {
-                  render: 'value'
+                    render: 'value'
                 }
             ]
             @endif
@@ -73,20 +83,6 @@
         tooltips: {
             mode: 'point'
         },
-        height: '{{ $options['chart_height'] ?? "300px" }}',
-        @if ($options['chart_type'] != 'pie' && $options['chart_type'] != 'doughnut')
-            scales: {
-                xAxes: [],
-                yAxes: [{
-                    ticks: {
-                        beginAtZero:true
-                    },
-                    @if($options['chart_type'] == 'bar' && isset($options['stacked']) && $options['stacked'] == true)
-                        stacked: true
-                    @endif
-                }]
-            },
-        @endif
     }
     });
 </script>
