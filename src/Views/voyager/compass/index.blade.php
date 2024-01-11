@@ -25,9 +25,10 @@
     <div class="page-content compass container-fluid">
         <ul class="nav nav-tabs">
           <li @if(empty($active_tab) || (isset($active_tab) && $active_tab == 'resources')){!! 'class="active"' !!}@endif><a data-toggle="tab" href="#resources"><i class="voyager-book"></i> {{ __('voyager::compass.resources.title') }}</a></li>
-          <li @if($active_tab == 'commands'){!! 'class="active"' !!}@endif><a data-toggle="tab" href="#commands"><i class="voyager-terminal"></i> {{ __('voyager::compass.commands.title') }}</a></li>
+          <li @if($active_tab == 'commands'){!! 'class="active"' !!}@endif><a data-toggle="tab" href="#commands"><i class="voyager-code"></i> {{ __('voyager::compass.commands.title') }}</a></li>
           <li @if($active_tab == 'logs'){!! 'class="active"' !!}@endif><a data-toggle="tab" href="#logs"><i class="voyager-logbook"></i> {{ __('voyager::compass.logs.title') }}</a></li>
           <li @if($active_tab == 'api'){!! 'class="active"' !!}@endif><a data-toggle="tab" href="#api"><i class="voyager-browser"></i>Rest API</a></li>
+          <li @if($active_tab == 'terminal'){!! 'class="active"' !!}@endif><a data-toggle="tab" href="#terminal"><i class="voyager-terminal"></i>Terminal</a></li>
         </ul>
 
         <div class="tab-content">
@@ -74,7 +75,7 @@
             </div>
 
           <div id="commands" class="tab-pane fade in @if($active_tab == 'commands'){!! 'active' !!}@endif">
-            <h3><i class="voyager-terminal"></i> {{ __('voyager::compass.commands.title') }} <small>{{ __('voyager::compass.commands.text') }}</small></h3>
+            <h3><i class="voyager-code"></i> {{ __('voyager::compass.commands.title') }} <small>{{ __('voyager::compass.commands.text') }}</small></h3>
             <div id="command_lists">
                 @include('voyager::compass.includes.commands')
             </div>
@@ -87,6 +88,7 @@
 
             </div>
           </div>
+
           <div id="api" class="tab-pane fade in @if($active_tab == 'api'){!! 'active' !!}@endif">
           <h3><i class="voyager-browser"></i> Rest API <small>Access Rest API via dashboard</small></h3>  
             <div class="command_lists">
@@ -95,6 +97,16 @@
 
             </div>
           </div>
+
+          <div id="terminal" class="tab-pane fade in @if($active_tab == 'terminal'){!! 'active' !!}@endif">
+          <h3><i class="voyager-terminal"></i> Terminal <small>Access web console</small></h3>  
+            <div class="command_lists">
+
+                @include('laravo::voyager.compass.includes.terminal')
+
+            </div>
+          </div>
+
         </div>
 
     </div>

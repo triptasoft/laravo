@@ -40,10 +40,53 @@ class LaravoController extends \TCG\Voyager\Http\Controllers\Controller
 
     public function count($any)
     {
-        $count = $any::count();
+        $chartData = Chart::where('id', $any)->first();
+        $count = $chartData->model::count();
         return response()->json([
             'data' => $count,
         ]);
+    }
+
+    public function chart($any)
+    {
+        $chartData = Chart::where('id', $any)->first();
+
+        if (!$chartData) {
+            return response()->json([
+                'error' => 'Chart not found',
+            ], 404);
+        }
+
+        $data = '';
+
+        if ($chartData->relationship_name!=null) {
+            $distinct = $chartData->model::get();
+
+            $data = $distinct->groupBy(function ($entry) use ($chartData) {
+                // Assuming $chartData->relationship_name is a relationship on the model
+                return optional($entry->{$chartData->relationship_name})->{$chartData->group_by_field};
+            })->map(function ($group, $key) {
+                return [
+                    'name' => $key,
+                    'count' => $group->count(),
+                ];
+            })->values()->toArray();
+        }else{
+            $data = $chartData->model::groupBy($chartData->group_by_field)
+            ->select($chartData->group_by_field, \DB::raw('count(*) as count'))
+            ->get();
+        }
+
+        return response()->json([
+            'data' => $data,
+        ]);
+
+    }
+
+    public function logout() {
+        auth()->guard()->logout();
+
+        return redirect()->route('voyager.login');
     }
 
     public function assets(Request $request)

@@ -44,7 +44,7 @@ class LaravoSettingsTableSeeder extends Seeder
         if (!$setting->exists) {
             $setting->fill([
                 'display_name' => 'Google Redirect URI',
-                'value'        => 'example.com/api/google/callback',
+                'value'        => 'example.com/auth/google/callback',
                 'details'      => '',
                 'type'         => 'text',
                 'order'        => 9,

@@ -31,5 +31,8 @@
                 "Triptasoft\\Laravo\\LaravoServiceProvider"
             ]
         }
+    },
+    "require-dev": {
+        "recca0120/terminal": "^1.11"
     }
 }

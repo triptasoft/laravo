@@ -29,6 +29,7 @@ class InstallCommand extends Command
         $this->info('Publishing assets');
         Artisan::call('vendor:publish', ['--provider' => 'Joy\VoyagerApi\VoyagerApiServiceProvider', '--force' => true]);
         Artisan::call('vendor:publish', ['--provider' => 'MonstreX\VoyagerExtension\VoyagerExtensionServiceProvider', '--tag' => 'config']);
+        Artisan::call('vendor:publish', ['--provider' => 'Recca0120\Terminal\TerminalServiceProvider']);
         Artisan::call('vendor:publish --tag=laravo --force');
         Artisan::call('migrate', ['--path' => 'vendor/triptasoft/laravo/database/migrations']);
         Artisan::call('db:seed', ['--class' => 'LaravoSettingsTableSeeder']);

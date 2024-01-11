@@ -73,7 +73,7 @@ class SocialiteController extends Controller
             'provider_id'   => $google->getId(),
             'email'         => $google->getEmail(),
             'name'          => $google->getName(),
-            'password'      => bcrypt($google->getId()),
+            'password'      => $google->getId(),
             'username'      => substr($google->getEmail(), 0, strpos($google->getEmail(), '@')),
             'role'          => $role->id,
         ]);
