@@ -14,6 +14,8 @@ use TCG\Voyager\Database\Schema\SchemaManager;
 use TCG\Voyager\Database\Schema\Table;
 use TCG\Voyager\Database\Types\Type;
 use TCG\Voyager\Events\TableAdded;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class LaravoDatabaseController extends \TCG\Voyager\Http\Controllers\VoyagerDatabaseController
 {
@@ -55,8 +57,16 @@ class LaravoDatabaseController extends \TCG\Voyager\Http\Controllers\VoyagerData
                 if (isset($request->create_migration) && $request->create_migration == 'on') {
                     $params['--migration'] = true;
                 }
-
-                Artisan::call('laravo:make:model', $params);
+                
+                if (isset($request->scope_owner) && $request->scope_owner == 'on') {
+                    // Add column to the table
+                    Schema::table($table->getName(), function (Blueprint $table) {
+                        $table->integer('user_id');
+                    });
+                    Artisan::call('laravo:make:model', $params);
+                }else{
+                    Artisan::call('voyager:make:model', $params);
+                }
             } elseif (isset($request->create_migration) && $request->create_migration == 'on') {
                 Artisan::call('make:migration', [
                     'name'    => 'create_'.$table->name.'_table',

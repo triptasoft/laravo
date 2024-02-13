@@ -48,8 +48,10 @@
                 @elseif ($options['chart_type'] == 'bar' && isset($dataset['chart_color']) && $dataset['chart_color'] != '')
                     borderColor: 'rgba({{ $dataset['chart_color'] }})',
                     backgroundColor: 'rgba({{ $dataset['chart_color'] }}, .2)',
+                @elseif ($options['chart_type'] == 'bar')
+                    borderRadius: 5,
                 @endif
-                borderWidth: 2
+                borderWidth: 2,
             },
             @endforeach
         ]
@@ -57,9 +59,12 @@
     options: {
         @if ($options['chart_type'] == 'pie' || $options['chart_type'] == 'doughnut')
             responsive: true,
-                maintainAspectRatio: true,
-                    aspectRatio: 2,
-                        @endif
+            maintainAspectRatio: true,
+            aspectRatio: 2,
+        @elseif ($options['chart_type'] == 'bar')
+            indexAxis: 'x',
+        @endif
+
         plugins: {
             @if ($options['chart_type'] == 'pie' || $options['chart_type'] == 'doughnut')
                 labels: [
@@ -73,11 +78,11 @@
                     }
                 ]
             @elseif ($options['chart_type'] == 'bar')
-            labels: [
-                {
-                    render: 'value'
-                }
-            ]
+                labels: [
+                    {
+                        render: 'value',
+                    }
+                ],
             @endif
         },
         tooltips: {

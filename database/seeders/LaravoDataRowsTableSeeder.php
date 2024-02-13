@@ -115,6 +115,30 @@ class LaravoDataRowsTableSeeder extends Seeder
             ])->save();
         }
 
+        $dataRow = $this->dataRow($chartDataType, 'group_by_period');
+        if (!$dataRow->exists) {
+            $dataRow->fill([
+                'type'         => 'radio_btn',
+                'display_name' => 'Group by Period',
+                'required'     => 0,
+                'browse'       => 0,
+                'read'         => 1,
+                'edit'         => 1,
+                'add'          => 1,
+                'delete'       => 1,
+                'order'        => 5,
+                'details'      => [
+                    'default' => 'day',
+                    'options' => [
+                        'day'   => 'Day',
+                        'week'  => 'Week',
+                        'month' => 'Month',
+                        'year'  => 'Year',
+                    ],
+                ],
+            ])->save();
+        }
+
         $dataRow = $this->dataRow($chartDataType, 'model');
         if (!$dataRow->exists) {
             $dataRow->fill([
@@ -126,7 +150,7 @@ class LaravoDataRowsTableSeeder extends Seeder
                 'edit'         => 1,
                 'add'          => 1,
                 'delete'       => 1,
-                'order'        => 5
+                'order'        => 6
             ])->save();
         }
 
@@ -141,7 +165,7 @@ class LaravoDataRowsTableSeeder extends Seeder
                 'edit'         => 1,
                 'add'          => 1,
                 'delete'       => 1,
-                'order'        => 6
+                'order'        => 7
             ])->save();
         }
 
@@ -156,7 +180,7 @@ class LaravoDataRowsTableSeeder extends Seeder
                 'edit'         => 1,
                 'add'          => 1,
                 'delete'       => 1,
-                'order'        => 7
+                'order'        => 8
             ])->save();
         }
 
@@ -171,7 +195,7 @@ class LaravoDataRowsTableSeeder extends Seeder
                 'edit'         => 1,
                 'add'          => 1,
                 'delete'       => 1,
-                'order'        => 8
+                'order'        => 9
             ])->save();
         }
 
@@ -186,7 +210,7 @@ class LaravoDataRowsTableSeeder extends Seeder
                 'edit'         => 1,
                 'add'          => 1,
                 'delete'       => 1,
-                'order'        => 9,
+                'order'        => 10,
                 'details'      => [
                     'browse_tree'            => true,
                     'browse_tree_push_right' => true,
@@ -205,7 +229,7 @@ class LaravoDataRowsTableSeeder extends Seeder
                 'edit'         => 1,
                 'add'          => 1,
                 'delete'       => 1,
-                'order'        => 10
+                'order'        => 11
             ])->save();
         }
 
@@ -220,7 +244,7 @@ class LaravoDataRowsTableSeeder extends Seeder
                 'edit'         => 0,
                 'add'          => 0,
                 'delete'       => 0,
-                'order'        => 11
+                'order'        => 12
             ])->save();
         }
 
@@ -235,7 +259,7 @@ class LaravoDataRowsTableSeeder extends Seeder
                 'edit'         => 0,
                 'add'          => 0,
                 'delete'       => 0,
-                'order'        => 12
+                'order'        => 13
             ])->save();
         }
 

@@ -1,6 +1,6 @@
 <?php
 Route::get('/', function () {
-    return view('laravo::voyager.login');
+    return view('voyager::login');
 });
 
 Route::group(['prefix' => 'admin'], function () {

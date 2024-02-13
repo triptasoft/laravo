@@ -38,6 +38,8 @@ class InstallCommand extends Command
         Artisan::call('db:seed', ['--class' => 'LaravoDataRowsTableSeeder']);
         Artisan::call('db:seed', ['--class' => 'LaravoMenuItemsTableSeeder']);
         Permission::generateFor('charts');
+        Artisan::call('db:seed', ['--class' => 'PermissionRoleTableSeeder']);
+
 
         $output = Artisan::output();
 

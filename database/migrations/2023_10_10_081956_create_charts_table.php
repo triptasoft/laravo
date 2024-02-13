@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('report_type')->nullable();
             $table->string('model')->nullable();
             $table->string('group_by_field')->nullable();
+            $table->string('group_by_period')->nullable();
             $table->string('relationship_name')->nullable();
             
             $table->integer('parent_id')->nullable();

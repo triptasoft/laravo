@@ -5,7 +5,7 @@
         @include('voyager::alerts')
         <!-- @include('voyager::dimmers') -->
 
-        <div class="container">
+        <div class="analytics-container">
             <div class="row">
 
                 <h3 class="col-md-12" style="margin-top:0px;margin-bottom:25px;">Dashboard</h3>

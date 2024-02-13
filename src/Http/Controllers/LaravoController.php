@@ -14,20 +14,9 @@ class LaravoController extends \TCG\Voyager\Http\Controllers\Controller
     public function index(Request $request) {
         $chartData = Chart::orderBy('order', 'asc')->get();
         $charts = [];
-        foreach($chartData as $chart){
-            $charts[] = $this->createChart([
-                'chart_title' => $chart->chart_title,
-                'report_type' => $chart->report_type,
-                'chart_type' => $chart->chart_type,
-                'model' => $chart->model,
-                'group_by_field' => $chart->group_by_field,
-                'relationship_name' => $chart->relationship_name,
-
-                'size' => $chart->size,
-                'type' => $chart->type,
-                'count' => $chart->model::count(),
-            ]);
-        };
+        foreach ($chartData as $chart) {
+            $charts[] = $this->createChart($chart->getAttributes() + ['count' => $chart->model::count()]);
+        }
     
         return view('voyager::index')->with([
             'charts' => $charts,
