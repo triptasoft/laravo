@@ -10,7 +10,8 @@
         "laravel/passport": "^11.9",
         "monstrex/voyager-extension": "^0.95.81",
         "laravel/socialite": "^5.9",
-        "beyondcode/laravel-ask-database": "^1.0"
+        "beyondcode/laravel-ask-database": "^1.0",
+        "recca0120/terminal": "^1.11"
     },
     "license": "MIT",
     "autoload": {
@@ -31,8 +32,5 @@
                 "Triptasoft\\Laravo\\LaravoServiceProvider"
             ]
         }
-    },
-    "require-dev": {
-        "recca0120/terminal": "^1.11"
     }
 }

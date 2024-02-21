@@ -1,21 +1,31 @@
 <?php
-Route::get('/', function () {
-    return view('voyager::login');
-});
+use TCG\Voyager\Events\Routing;
+use TCG\Voyager\Events\RoutingAdmin;
+
+// Route::get('/', function () {
+//     return view('voyager::login');
+// });
 
 Route::group(['prefix' => 'admin'], function () {
 	Route::group(['as' => 'voyager.'], function () {
+		event(new Routing());
+
 		$vnamespacePrefix = '\\'.config('voyager.controllers.namespace').'\\';
 		$namespacePrefix = '\\'.'Triptasoft\Laravo\Http\Controllers'.'\\';
 
 		Route::get('login', ['uses' => $vnamespacePrefix.'VoyagerAuthController@login',     'as' => 'login']);
     	Route::post('login', ['uses' => $vnamespacePrefix.'VoyagerAuthController@postLogin', 'as' => 'postlogin']);
+
+		Route::group(['middleware' => 'admin.user'], function () use ($namespacePrefix) {
+			event(new RoutingAdmin());
 		
-		// Main Admin and Logout Route
-		Route::get('/', ['uses' => $namespacePrefix.'LaravoController@index',   'as' => 'dashboard']);
-		Route::post('logout', ['uses' => $namespacePrefix.'LaravoController@logout',  'as' => 'logout']);
-		// Database Routes
-		Route::resource('database', $namespacePrefix.'LaravoDatabaseController');
+			// Main Admin and Logout Route
+			Route::get('/', ['uses' => $namespacePrefix.'LaravoController@index',   'as' => 'dashboard']);
+			Route::post('logout', ['uses' => $namespacePrefix.'LaravoController@logout',  'as' => 'logout']);
+			// Database Routes
+			Route::resource('database', $namespacePrefix.'LaravoDatabaseController');
+
+		});
 		
 	});
 	

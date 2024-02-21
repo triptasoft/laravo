@@ -22,55 +22,51 @@
                 @if($dataset['hidden'] === true)
                     hidden: true,
                 @endif
-                @if ($options['chart_type'] == 'line')
-                    @if (isset($dataset['fill']) && $dataset['fill'] != '')
-                        fill: '{{ $dataset['fill'] }}',
-                    @else
-                        fill: false,
-                    @endif
-                    @if (isset($dataset['color']) && $dataset['color'] != '')
-                        borderColor: '{{ $dataset['color'] }}',
-                    @elseif (isset($dataset['chart_color']) && $dataset['chart_color'] != '')
-                        borderColor: 'rgba({{ $dataset['chart_color'] }})',
-                    @else
-                        borderColor: 'rgba({{ rand(0,255) }}, {{ rand(0,255) }}, {{ rand(0,255) }}, 0.2)',
-                    @endif
-                @elseif ($options['chart_type'] == 'pie' || $options['chart_type'] == 'doughnut')
-                    backgroundColor: [
-                        @foreach ($dataset['data'] as $group => $result)
-                            @if (isset($dataset['chart_color'][$group]) && $dataset['chart_color'][$group] != '')
-                                'rgba({{ $dataset['chart_color'][$group] }})',
-                            @else
-                                'rgba({{ rand(0,255) }}, {{ rand(0,255) }}, {{ rand(0,255) }}, 0.2)',
-                            @endif
-                        @endforeach
-                    ],
-                @elseif ($options['chart_type'] == 'bar' && isset($dataset['chart_color']) && $dataset['chart_color'] != '')
-                    borderColor: 'rgba({{ $dataset['chart_color'] }})',
-                    backgroundColor: 'rgba({{ $dataset['chart_color'] }}, .2)',
-                @elseif ($options['chart_type'] == 'bar')
-                    borderRadius: 5,
-                @endif
-                borderWidth: 2,
             },
             @endforeach
         ]
     },
     options: {
+        animations: {
+          tension: {
+            duration: 1000,
+            easing: 'easeInOutBounce',
+            from: 0,
+            to: 0.5,
+            loop: true
+          }
+        },
         @if ($options['chart_type'] == 'pie' || $options['chart_type'] == 'doughnut')
             responsive: true,
             maintainAspectRatio: true,
             aspectRatio: 2,
         @elseif ($options['chart_type'] == 'bar')
             indexAxis: 'x',
+            borderWidth: 2,
+            borderRadius: 5,
+        @elseif ($options['chart_type'] == 'line')
+            tension: 0.1,
+            borderWidth: 2,
         @endif
 
         plugins: {
-            @if ($options['chart_type'] == 'pie' || $options['chart_type'] == 'doughnut')
+            @if ($options['chart_type'] == 'pie')
                 labels: [
                     {
                         render: 'percentage',
-                        position: 'border',
+                        position: 'default',
+                        overlap: false,
+                        outsidePadding: 2,
+                        textMargin: 2,
+                        arc: false,
+                        fontColor: '#fff'
+                    }
+                ]
+            @elseif ($options['chart_type'] == 'doughnut')
+                labels: [
+                    {
+                        render: 'percentage',
+                        position: 'outside',
                         overlap: false,
                         outsidePadding: 2,
                         textMargin: 2,
